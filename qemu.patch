@@ -1,0 +1,33 @@
+--- /usr/bin/archbuild	2019-01-30 00:11:39.000000000 +0800
++++ qemu_archbuild	2019-03-11 18:25:38.716364546 +0800
+@@ -259,7 +259,7 @@
+ }
+ 
+ 
+-base_packages=(base-devel)
++base_packages=(base-devel namcap)
+ makechrootpkg_args=(-c -n)
+ 
+ cmd="${0##*/}"
+@@ -316,15 +316,19 @@
+ 	rm -rf --one-file-system "${chroots}/${repo}-${arch}"
+ 	mkdir -p "${chroots}/${repo}-${arch}"
+ 	mkarchroot \
+-		-C "/usr/share/devtools/pacman-${repo}.conf" \
++		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
+ 		-M "/usr/share/devtools/makepkg-${arch}.conf" \
++		-f '/usr/bin/qemu-arm-static' \
++		-f '/usr/share/devtools/qemu_mirrorlist' \
+ 		"${chroots}/${repo}-${arch}/root" \
+ 		"${base_packages[@]}" || abort
+ else
+ 	lock 9 "${chroots}/${repo}-${arch}/root.lock" "Locking clean chroot"
+ 	arch-nspawn \
+-		-C "/usr/share/devtools/pacman-${repo}.conf" \
++		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
+ 		-M "/usr/share/devtools/makepkg-${arch}.conf" \
++		-f '/usr/bin/qemu-arm-static' \
++		-f '/usr/share/devtools/qemu_mirrorlist' \
+ 		"${chroots}/${repo}-${arch}/root" \
+                 pacman -Syu --noconfirm || abort
+ fi
