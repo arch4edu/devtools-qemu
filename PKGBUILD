@@ -32,6 +32,7 @@ package() {
   for i in armv6h armv7h aarch64
   do
     cp $srcdir/$pkgname/pacman-extra-$i.conf $pkgdir/usr/share/devtools/
+    cp $srcdir/$pkgname/makepkg-$i.conf $pkgdir/usr/share/devtools/
     ln -sf /usr/bin/qemu_archbuild $pkgdir/usr/bin/extra-$i-build
   done
 }
