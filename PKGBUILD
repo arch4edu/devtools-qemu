@@ -1,5 +1,5 @@
 pkgname=devtools-qemu
-pkgver=7.c1609f2
+pkgver=2.76715c0
 pkgrel=1
 pkgdesc='QEMU based cross-build tools for Archlinux package maintainers'
 arch=('x86_64')
@@ -24,13 +24,14 @@ build() {
 
 package() {
   mkdir -p $pkgdir/usr/bin
+  mkdir -p $pkgdir/usr/share/devtools
 
-  cp $srcdir/qemu_archbuild $pkgdir/usr/bin
-  cp $srcdir/mirrorlist $pkgdir/usr/share/devtools/qemu-mirrorlist
+  cp $srcdir/$pkgname/qemu_archbuild $pkgdir/usr/bin
+  cp $srcdir/$pkgname/mirrorlist $pkgdir/usr/share/devtools/qemu_mirrorlist
 
   for i in armv6h armv7h aarch64
   do
-    cp $srcdir/pacman-extra-$i.conf $pkgdir/share/devtools/
+    cp $srcdir/$pkgname/pacman-extra-$i.conf $pkgdir/usr/share/devtools/
     ln -sf /usr/bin/qemu_archbuild $pkgdir/usr/bin/extra-$i-build
   done
 }
