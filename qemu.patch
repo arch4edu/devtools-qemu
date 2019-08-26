@@ -1,15 +1,18 @@
---- /usr/bin/archbuild	2019-01-30 00:11:39.000000000 +0800
-+++ qemu_archbuild	2019-03-13 00:08:29.458016020 +0800
-@@ -259,7 +259,7 @@
- }
- 
- 
--base_packages=(base-devel)
-+base_packages=(base-devel namcap)
- makechrootpkg_args=(-c -n)
- 
- cmd="${0##*/}"
-@@ -299,6 +299,8 @@
+--- /usr/bin/archbuild	2019-06-11 00:11:13.000000000 +0800
++++ qemu_archbuild	2019-08-26 17:56:31.925524302 +0800
+@@ -271,6 +271,11 @@
+ 	tag="${cmd%-build}"
+ 	repo=${tag%-*}
+ 	arch=${tag##*-}
++	if [[ "x${arch}" = "xaarch64" ]]; then
++		qemu_static='/usr/bin/qemu-aarch64-static'
++	else
++		qemu_static='/usr/bin/qemu-arm-static'
++	fi
+ fi
+ chroots='/var/lib/archbuild'
+ clean_first=false
+@@ -299,6 +304,8 @@
  # Pass all arguments after -- right to makepkg
  makechrootpkg_args+=("${@:$OPTIND}")
  
@@ -18,14 +21,14 @@
  if ${clean_first} || [[ ! -d "${chroots}/${repo}-${arch}" ]]; then
  	msg "Creating chroot for [%s] (%s)..." "${repo}" "${arch}"
  
-@@ -316,15 +318,21 @@
+@@ -316,15 +323,21 @@
  	rm -rf --one-file-system "${chroots}/${repo}-${arch}"
  	mkdir -p "${chroots}/${repo}-${arch}"
  	mkarchroot \
 -		-C "/usr/share/devtools/pacman-${repo}.conf" \
 +		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
  		-M "/usr/share/devtools/makepkg-${arch}.conf" \
-+		-f '/usr/bin/qemu-arm-static' \
++		-f "$qemu_static" \
 +		-f '/usr/share/devtools/qemu_mirrorlist' \
 +		-c "${pkgcache}/${arch}/" \
  		"${chroots}/${repo}-${arch}/root" \
@@ -36,13 +39,13 @@
 -		-C "/usr/share/devtools/pacman-${repo}.conf" \
 +		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
  		-M "/usr/share/devtools/makepkg-${arch}.conf" \
-+		-f '/usr/bin/qemu-arm-static' \
++		-f "$qemu_static" \
 +		-f '/usr/share/devtools/qemu_mirrorlist' \
 +		-c "${pkgcache}/${arch}/" \
  		"${chroots}/${repo}-${arch}/root" \
                  pacman -Syu --noconfirm || abort
  fi
-@@ -335,4 +343,4 @@
+@@ -335,4 +348,4 @@
  fi
  
  msg "Building in chroot for [%s] (%s)..." "${repo}" "${arch}"
