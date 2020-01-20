@@ -1,6 +1,6 @@
---- /usr/bin/archbuild	2019-06-11 00:11:13.000000000 +0800
-+++ qemu_archbuild	2019-08-26 17:56:31.925524302 +0800
-@@ -271,6 +271,11 @@
+--- /usr/bin/archbuild	2019-09-22 00:10:53.000000000 +0800
++++ qemu_archbuild	2020-01-20 21:52:05.298993263 +0800
+@@ -263,6 +263,11 @@
  	tag="${cmd%-build}"
  	repo=${tag%-*}
  	arch=${tag##*-}
@@ -12,7 +12,7 @@
  fi
  chroots='/var/lib/archbuild'
  clean_first=false
-@@ -299,6 +304,8 @@
+@@ -300,6 +305,8 @@
  # Pass all arguments after -- right to makepkg
  makechrootpkg_args+=("${@:$OPTIND}")
  
@@ -21,31 +21,27 @@
  if ${clean_first} || [[ ! -d "${chroots}/${repo}-${arch}" ]]; then
  	msg "Creating chroot for [%s] (%s)..." "${repo}" "${arch}"
  
-@@ -316,15 +323,21 @@
- 	rm -rf --one-file-system "${chroots}/${repo}-${arch}"
- 	mkdir -p "${chroots}/${repo}-${arch}"
+@@ -319,6 +326,9 @@
  	mkarchroot \
--		-C "/usr/share/devtools/pacman-${repo}.conf" \
-+		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
- 		-M "/usr/share/devtools/makepkg-${arch}.conf" \
+ 		-C "${pacman_config}" \
+ 		-M "${makepkg_config}" \
 +		-f "$qemu_static" \
 +		-f '/usr/share/devtools/qemu_mirrorlist' \
 +		-c "${pkgcache}/${arch}/" \
  		"${chroots}/${repo}-${arch}/root" \
  		"${base_packages[@]}" || abort
  else
- 	lock 9 "${chroots}/${repo}-${arch}/root.lock" "Locking clean chroot"
+@@ -326,6 +336,9 @@
  	arch-nspawn \
--		-C "/usr/share/devtools/pacman-${repo}.conf" \
-+		-C "/usr/share/devtools/pacman-${repo}-${arch}.conf" \
- 		-M "/usr/share/devtools/makepkg-${arch}.conf" \
+ 		-C "${pacman_config}" \
+ 		-M "${makepkg_config}" \
 +		-f "$qemu_static" \
 +		-f '/usr/share/devtools/qemu_mirrorlist' \
 +		-c "${pkgcache}/${arch}/" \
  		"${chroots}/${repo}-${arch}/root" \
-                 pacman -Syu --noconfirm || abort
+ 		pacman -Syuu --noconfirm || abort
  fi
-@@ -335,4 +348,4 @@
+@@ -336,4 +349,4 @@
  fi
  
  msg "Building in chroot for [%s] (%s)..." "${repo}" "${arch}"

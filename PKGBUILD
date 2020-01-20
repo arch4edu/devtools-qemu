@@ -1,5 +1,5 @@
 pkgname=devtools-qemu
-pkgver=6.ee39808
+pkgver=8.dad2217
 pkgrel=1
 pkgdesc='QEMU based cross-build tools for Arch Linux ARM package maintainers'
 arch=('x86_64')
