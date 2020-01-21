@@ -1,12 +1,5 @@
---- devtools-alarm-20190912/usr/share/devtools/makepkg-x86_64.conf	2019-09-22 00:10:53.000000000 +0800
+--- /usr/share/devtools/makepkg-x86_64.conf	2019-09-22 00:10:53.000000000 +0800
 +++ makepkg-armv6h.conf	2019-03-11 19:04:32.935895750 +0800
-@@ -1,6 +1,4 @@
- #!/hint/bash
--# shellcheck disable=2034
--
- #
- # /etc/makepkg.conf
- #
 @@ -34,13 +32,15 @@
  # ARCHITECTURE, COMPILE FLAGS
  #########################################################################
@@ -27,9 +20,3 @@
  LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
  #-- Make Flags: change this for DistCC/SMP systems
  #MAKEFLAGS="-j2"
-@@ -145,5 +145,3 @@
- #
- PKGEXT='.pkg.tar.xz'
- SRCEXT='.src.tar.gz'
--
--# vim: set ft=sh ts=2 sw=2 et:
