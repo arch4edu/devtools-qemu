@@ -1,0 +1,31 @@
+--- devtools-alarm-20190912/usr/share/devtools/pacman-extra.conf	2019-09-22 00:10:53.000000000 +0800
++++ pacman-extra-armv7h.conf	2019-03-11 19:25:21.497557798 +0800
+@@ -20,7 +20,7 @@
+ #XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
+ #CleanMethod = KeepInstalled
+ #UseDelta    = 0.7
+-Architecture = auto
++Architecture = armv7h
+ 
+ # Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup
+ #IgnorePkg   =
+@@ -74,16 +74,16 @@
+ #Include = /etc/pacman.d/mirrorlist
+ 
+ [core]
+-Include = /etc/pacman.d/mirrorlist
++Include = /usr/share/devtools/qemu_mirrorlist
+ 
+ [extra]
+-Include = /etc/pacman.d/mirrorlist
++Include = /usr/share/devtools/qemu_mirrorlist
+ 
+ #[community-testing]
+ #Include = /etc/pacman.d/mirrorlist
+ 
+ [community]
+-Include = /etc/pacman.d/mirrorlist
++Include = /usr/share/devtools/qemu_mirrorlist
+ 
+ # An example of a custom package repository.  See the pacman manpage for
+ # tips on creating your own repositories.

@@ -1,0 +1,35 @@
+--- devtools-alarm-20190912/usr/share/devtools/makepkg-x86_64.conf	2019-09-22 00:10:53.000000000 +0800
++++ makepkg-armv7h.conf	2019-03-11 19:34:02.349825141 +0800
+@@ -1,6 +1,4 @@
+ #!/hint/bash
+-# shellcheck disable=2034
+-
+ #
+ # /etc/makepkg.conf
+ #
+@@ -34,13 +32,15 @@
+ # ARCHITECTURE, COMPILE FLAGS
+ #########################################################################
+ #
+-CARCH="x86_64"
+-CHOST="x86_64-pc-linux-gnu"
++CARCH="armv7h"
++CHOST="armv7l-unknown-linux-gnueabihf"
+ 
+ #-- Compiler and Linker Flags
++# -march (or -mcpu) builds exclusively for an architecture
++# -mtune optimizes for an architecture, but builds for whole processor family
+ CPPFLAGS="-D_FORTIFY_SOURCE=2"
+-CFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fno-plt"
+-CXXFLAGS="-march=x86-64 -mtune=generic -O2 -pipe -fno-plt"
++CFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector-strong -fno-plt"
++CXXFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector-strong -fno-plt"
+ LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
+ #-- Make Flags: change this for DistCC/SMP systems
+ #MAKEFLAGS="-j2"
+@@ -145,5 +145,3 @@
+ #
+ PKGEXT='.pkg.tar.xz'
+ SRCEXT='.src.tar.gz'
+-
+-# vim: set ft=sh ts=2 sw=2 et:
