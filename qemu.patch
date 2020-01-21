@@ -46,4 +46,4 @@
  
  msg "Building in chroot for [%s] (%s)..." "${repo}" "${arch}"
 -exec makechrootpkg -r "${chroots}/${repo}-${arch}" "${makechrootpkg_args[@]}"
-+exec makechrootpkg -r "${chroots}/${repo}-${arch}" -C "${pkgcache}/${arch}/" "${makechrootpkg_args[@]}"
++exec makechrootpkg -r "${chroots}/${repo}-${arch}" -X "${pkgcache}/${arch}/" "${makechrootpkg_args[@]}"

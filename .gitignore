@@ -1,3 +1,6 @@
 */
 *build
 *.pkg*
+*.log
+*.orig
+*.rej
